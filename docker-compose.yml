@@ -1,0 +1,65 @@
+version: '3.1'
+
+services:
+    postgresql:
+        image: postgres
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: ${PG_PASS}
+            POSTGRES_USER: ${PG_USER}
+            POSTGRES_DB: ${PG_DB}
+        volumes:
+            - /var/cache/pgdata:/var/lib/postgresql/data
+        networks:
+            - evolution-net
+
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "admin@gmail.com"
+            PGADMIN_DEFAULT_PASSWORD: "admin"
+        ports:
+            - "5050:80"
+        depends_on:
+            - postgresql
+        networks:
+            - evolution-net
+
+    cache:
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+            - "6379:6379"
+        command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+        volumes: 
+            - cache:/data
+        networks:
+            - evolution-net
+
+    evolution-api:
+        image: atendai/evolution-api:v2.2.3
+        container_name: evolution_api
+        restart: always
+        ports:
+            - "8080:8080"
+        env_file:
+            - evoApi.env
+        volumes:
+            - evolution_store:/evolution/store
+            - evolution_instances:/evolution/instances
+        depends_on:
+            - postgresql
+            - cache
+        networks:
+            - evolution-net
+
+volumes:
+    cache:
+    evolution_store:
+    evolution_instances:
+
+networks:
+    evolution-net:
+        driver: bridge

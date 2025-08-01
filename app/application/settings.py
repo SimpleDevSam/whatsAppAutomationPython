@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     database_url: str 
     redis_url: str
     pythonpath: str
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="app/.env")
 
 @lru_cache
 def get_settings() -> Settings:

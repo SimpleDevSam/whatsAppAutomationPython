@@ -3,14 +3,14 @@ from http.client import HTTPException
 import json
 import re
 from typing import Dict
-from application.requests.difiRequest import DifyRequest
-from application.requests.evolutionRequest import EvolutionApiImageRequest, EvolutionApiTextRequest, Options
-from database.redis import push_buffer, fetch_buffer, clear_buffer
+from app.application.requests.difiRequest import DifyRequest
+from app.application.requests.evolutionRequest import EvolutionApiImageRequest, EvolutionApiTextRequest, Options
+from app.database.redis import push_buffer, fetch_buffer, clear_buffer
 from sqlalchemy import select
-from application.requests.webHookRequest import WebhookData
-from application.responses.difyResponse import DifyResponse, generateMockDifyResponse
-from database.connection import async_session
-from database.models import Company, Images, User
+from app.application.requests.webHookRequest import WebhookData
+from app.application.responses.difyResponse import DifyResponse, generateMockDifyResponse
+from app.database.connection import async_session
+from app.database.models import Company, Images, User
 import httpx
 
 async def handleMessage (webHookData: WebhookData):

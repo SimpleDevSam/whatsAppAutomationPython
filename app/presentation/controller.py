@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Request
-from application.requests.webHookRequest import WebhookData
-from application.handleMessage import handleMessage
+from app.application.requests.webHookRequest import WebhookData
+from app.application.handleMessage import handleMessage
 
 router = APIRouter()
 
